@@ -1,0 +1,31 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Dockerize build and push to ghcr
+
+on:
+  push:
+    branches:
+      - release/*
+  pull_request:
+      types: [opened, synchronize, reopened, closed]
+      branches:
+        - release/*
+        - main
+        - master
+  workflow_dispatch:
+
+env:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
+      - name: Build and publish a Docker image for ${{ github.repository }}
+        uses: macbre/push-to-ghcr@master
+        with:
+          image_name: ${{ github.repository }}  # it will be lowercased internally
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: "./Dockerfile"
