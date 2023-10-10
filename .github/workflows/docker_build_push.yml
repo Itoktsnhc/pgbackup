@@ -14,13 +14,15 @@ on:
         - main
         - master
   workflow_dispatch:
-    
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
+        with:
+            submodules: recursive
       - name: Build and publish a Docker image for ${{ github.repository }}
         uses: macbre/push-to-ghcr@master
         with:
